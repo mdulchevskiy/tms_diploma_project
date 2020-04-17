@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %} Candy Shop {% endblock %}
+
+{% block style %}
+    <style>
+        #info {
+            position: absolute;
+            width: 99%;
+            left: 1px;
+            top: 280px;
+            background: white;
+            opacity: 0.8;
+            z-index: 2000;
+        }
+        .hidden {
+            display: none;
+        }
+        .messages li.success {
+            color: seagreen;
+        }
+        .messages li.info {
+            color: darkgoldenrod;
+        }
+        .block_for_logo_1 {
+            position: absolute;
+            left: 50%;
+            margin-left: -250px;
+        }
+        .logo_1 {
+            width: 500px;
+            height: auto;
+        }
+        .content_block_1 {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            margin-left: calc({{ row_len }}*(-5em - 1vw));
+            margin-top: calc(5em + 3vw);
+        }
+        .sweet_title {
+            text-align: center;
+            font-size: calc(0.5em + 1vw);
+        }
+        .sweet_img {
+            width: calc(10em + 2vw);
+            height: auto;
+            border: 1px solid #f1ebed;
+        }
+        .sweet_img:hover {
+            border: 1px dashed #e13d70;
+            border-radius: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% load static %}
+
+    {% if messages %}
+        <div id="info">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <script>
+        function hide_message() {
+            const message = document.querySelector("#info");
+            message.classList.add("hidden");}
+        setTimeout(() => hide_message(), 10000)
+    </script>
+
+    <div class="block_for_logo_1">
+        <img src="{% static 'logo_1.png' %}" class="logo_1">
+    </div>
+
+    <div class="content_block_1">
+        <table>
+            <tbody>
+                {% for row in sweet_object %}
+                    <tr>
+                    {% for sweet_type, pic_name in row %}
+                        <td>
+                            <div class="sweet_title">
+                                <font color=#5a3c24>{{ sweet_type.sweet_type }}</font>
+                            </div>
+                            <a href="{% url 'sweet_page' sweet_type.sweet_type %}">
+                                <img src="{% static pic_name %}" class="sweet_img">
+                            </a>
+                        </td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

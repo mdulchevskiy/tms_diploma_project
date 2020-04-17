@@ -1,0 +1,43 @@
+{% extends "base_with_logo.html" %}
+
+{% block title %} Registration {% endblock %}
+
+{% block style %}
+    <style>
+        .block_for_reg_frame {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            margin-left: -400px;
+        }
+        .reg_frame {
+            width: 800px;
+            height: auto;
+        }
+        .block_content_1 {
+            position: absolute;
+            left: 50%;
+            top: 210px;
+            margin-left: -150px;
+            background: rgba(0,0,0,0);
+        }
+        .reg_button {
+            margin-left: 80px;
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% load static %}
+    <div class="block_for_reg_frame">
+        <img src="{% static 'reg_frame.png' %}" class=reg_frame>
+    </div>
+
+    <div class="block_content_1">
+        <form method="POST" novalidate>
+            {{ form.as_myp }}
+            <input class="reg_button" type="submit" value="Create Account">
+        </form>
+    </div>
+{% endblock %}

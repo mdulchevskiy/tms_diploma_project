@@ -1,0 +1,141 @@
+{% extends "base_with_logo.html" %}
+
+{% block title %} Sweet page {% endblock %}
+
+{% block style %}
+    <style>
+        #info {
+            position: absolute;
+            width: 99.8%;
+            left: 1px;
+            top: 85px;
+            background: white;
+            visibility: visible;
+            opacity: 0.8;
+            z-index: 2000;
+        }
+        .hidden {
+            display: none;
+        }
+        .messages li.success {
+            color: seagreen;
+        }
+        .block_for_sweet_img {
+            position: absolute;
+            top: 145px;
+            left: 50%;
+            margin-left: -220px;
+        }
+        .sweet_img {
+            width: 70px;
+            height: auto;
+        }
+        .block_for_sweet_title {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            margin-left: -150px;
+        }
+        .content_block_1 {
+            position: absolute;
+            left: 50%;
+            top: 215px;
+            margin-left: -220px;
+            background: rgba(0,0,0,0);
+        }
+        .row_1 {
+            background: #ffe9ed;
+        }
+        .column_1 {
+            width: 250px;
+        }
+        .column_2 {
+            width: 50px;
+        }
+        .add_button {
+            display: inline-block;
+            border: 1px solid white;
+            background: white;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% load static %}
+
+    {% if messages %}
+        <div id="info">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <script>
+        function hide_message() {
+            const message = document.querySelector("#info");
+            message.classList.add("hidden");}
+        setTimeout(() => hide_message(), 3000)
+    </script>
+
+    <div class="sign_block">
+        {% if signed_user %}
+            <div style="width: 150px; text-indent: 10px">
+{#                <img src="https://img2.freepng.ru/20180401/klw/kisspng-user-profile-computer-icons-clip-art-profile-5ac092f6f2d337.1560498715225699749946.jpg" width="10px">#}
+                <img src="{% static 'profile.png' %}" width="13px">
+                {{ signed_user.username }}
+            </div>
+
+            <form method="POST">
+                <button class="sign_button" formaction="{% url 'home_page' %}" name="status" value=0>Sign out</button>
+            </form>
+        {% else %}
+            <form method="GET">
+                <button class="sign_button" formaction="{% url 'sign_in' %}">Sign in</button>
+            </form>
+        {% endif %}
+
+        <form method="GET">
+            <button class="sign_button" formaction="{% url 'checkout' %}">Go to Cart</button>
+        </form>
+    </div>
+
+    <div class="block_for_sweet_img">
+        <img src="{% static pic_name %}" class="sweet_img">
+    </div>
+
+    <div class="block_for_sweet_title">
+        <font color=#5a3c24 size="16">{{ sweet_type }}</font>
+    </div>
+
+    <div class="content_block_1">
+        <table>
+            <thead>
+                <tr class="row_1">
+                    <th class="column_1">Sweet</th>
+                    <th class="column_2">Price</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sweet in sweets %}
+                    <tr>
+                        <td>{{ sweet.sweet }}</td>
+                        <td>{{ sweet.price }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'add_to_basket' sweet.id %}">
+                                <input type="number" min="0" max="999" value="0" name="amount" step="1">
+                                <input class="add_button" type="submit" value="ADD">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

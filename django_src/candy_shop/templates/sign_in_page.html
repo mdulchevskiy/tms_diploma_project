@@ -1,0 +1,47 @@
+{% extends "base_with_logo.html" %}
+
+{% block title %} Sign in {% endblock %}
+
+{% block style %}
+    <style>
+        .block_for_login_frame {
+            position: absolute;
+            left: 50%;
+            top: 20%;
+            margin-left: -310px;
+        }
+        .login_frame {
+            width: 620px;
+            height: auto;
+        }
+        .content_block_1 {
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            margin-left: -160px;
+            background: rgba(0,0,0,0);
+        }
+        .sign_button {
+            margin-left: 80px;
+        }
+        .registration {
+            margin-left: 110px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% load static %}
+    <div class="block_for_login_frame">
+        <img src="{% static 'login_frame.png' %}" class="login_frame">
+    </div>
+
+    <div class="content_block_1">
+        <form method="POST" action="{% url 'sign_in' %}" novalidate>
+            {{ form.as_myps }}
+            <input type="submit" value="Sign in" class="sign_button">
+        </form>
+
+        <a href="{% url 'registration' %}" class="registration">Create Account</a>
+    </div>
+{% endblock %}
